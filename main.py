@@ -4,9 +4,9 @@ from telebot import types
 from cycle import get_image
 
 with open('token.txt') as fin:
-    token = fin.read()
-
+    token = fin.readline()
 bot = telebot.TeleBot(token)
+
 
 
 @bot.message_handler(commands=['start', 'help'])
