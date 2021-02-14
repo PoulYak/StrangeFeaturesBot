@@ -45,7 +45,7 @@
 ![AWS](images/img_1.png) Разместил его на virtual machine AWS EC2
 
 
-# _Итоговый [**Бот**](https://t.me/StrangeFeaturesBot)_
-
+# [**Бот**](https://t.me/StrangeFeaturesBot) 
+_@StrangeFeaturesBot_
 
  
