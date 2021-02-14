@@ -3,9 +3,8 @@ from telebot import types
 
 from cycle import get_image
 
-with open('token.txt') as fin:
-    token = fin.readline()
-bot = telebot.TeleBot(token)
+
+bot = telebot.TeleBot("1657678556:AAEkScnwrsJ2kzsXr_M3nhuo_ifAgwhUS5I")
 
 
 @bot.message_handler(commands=['start', 'help'])
