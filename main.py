@@ -24,7 +24,9 @@ def send_photo(message):
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     bn1 = types.KeyboardButton('Cartoon style')
     bn2 = types.KeyboardButton('Maps')
+    bn3 = types.KeyboardButton('Creepy style')
     kb.add(bn1)
+    kb.add(bn3)
     kb.add(bn2)
     bot.send_message(message.chat.id, 'Choose style', reply_markup=kb)
     bot.register_next_step_handler(message, get_photo_style)
@@ -39,6 +41,9 @@ def get_photo_style(message):
     elif message.text == 'Maps':
         d_set = 'maps'
         ups = False
+    elif message.text == 'Creepy style':
+        d_set = 'faces2pencil'
+        ups = True
     get_image('imag.jpg', d_set, str(message.from_user.id), ups=ups)
     doc = open('results/' + str(message.from_user.id) + '/imag.jpg', 'rb')
 
