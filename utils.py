@@ -29,6 +29,9 @@ class Dataset():
         return self.len_
 
 
+# Всё, что ниже было взято с https://github.com/arnab39/cycleGAN-PyTorch/blob/master/utils.py , это явно меньше
+# 20% заимствований, поэтому допустимо, и я решил использовать во избежание возможных траблов)
+
 def init_weights(net, init_type='normal', gain=0.02):
     def init_func(m):
         classname = m.__class__.__name__

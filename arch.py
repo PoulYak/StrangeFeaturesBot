@@ -8,10 +8,9 @@ get_norm_layer = {'instance': functools.partial(nn.InstanceNorm2d, affine=False,
 
 
 class convUpsample(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size=3, stride=1, ups=False):
+    def __init__(self, in_channels, out_channels, kernel_size=3, stride=1):
         super().__init__()
         block = []
-        self.ups = ups
         self.block = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='bilinear'),
             nn.Conv2d(in_channels, out_channels,
@@ -21,12 +20,7 @@ class convUpsample(nn.Module):
         self.conv = nn.ConvTranspose2d(in_channels, out_channels, kernel_size, 2, 1, 1, bias=False)
 
     def forward(self, x):
-        # a = self.block(x)
-        # there i tried use different deconvolutional layers
-        if self.ups:
-            a = self.block(x)
-        else:
-            a = self.conv(x)
+        a = self.conv(x)
         return a
 
 
@@ -62,7 +56,10 @@ def layer(conv, act, in_ch, out_ch, kernel_size, stride=1, padding=0,
         layer += [nn.Conv2d(in_ch, out_ch, kernel_size, stride, padding,
                             bias=bias)]
     else:
-        layer += [convUpsample(in_ch, out_ch, kernel_size, stride, ups=ups)]
+        if ups:
+            layer += [convUpsample(in_ch, out_ch, kernel_size, stride)]
+        else:
+            layer += [nn.ConvTranspose2d(in_ch, out_ch, kernel_size, stride, 1, 1, bias=False)]
     layer += [norm_layer(out_ch)]
     if act == 'relu':
         layer += [nn.ReLU(True)]

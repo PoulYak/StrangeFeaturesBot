@@ -8,7 +8,6 @@ class Generator(nn.Module):
     def __init__(self, input_ch=3, output_ch=3, ngf=64, norm='batch',
                  use_dropout=True, num_blocks=6, ups=False):
         super().__init__()
-        norm_layer = get_norm_layer[norm]
         use_bias = not (norm == 'batch')
         model = [
             nn.ReflectionPad2d(3),
