@@ -4,7 +4,7 @@ from telebot import types
 from cycle import get_image
 
 
-bot = telebot.TeleBot("1657678556:AAEkScnwrsJ2kzsXr_M3nhuo_ifAgwhUS5I")
+bot = telebot.TeleBot("")
 
 
 @bot.message_handler(commands=['start', 'help'])
