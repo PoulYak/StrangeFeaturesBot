@@ -228,7 +228,7 @@ def get_image(path, dataname, id, orint='ba', ups=False):
          transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
     x = Image.open(path)
     x = x.convert('RGB')
-    size_was = x.size
+    height, width = x.size
     x = transforms.ColorJitter(brightness=(1.2, 1.201))(x)
     x = transform(x)
     x = x[np.newaxis, :]
@@ -236,12 +236,19 @@ def get_image(path, dataname, id, orint='ba', ups=False):
     norm = 'instance'
 
     gen = Gen(input_nc=3, output_nc=3, norm=norm, use_dropout=use_dropout, is_cuda=False, ups=ups)
-    checkpoint = torch.load('%s/last' % (dir_checkpoints), map_location='cpu')
+    checkpoint = torch.load('%s/last' % dir_checkpoints, map_location='cpu')
     gen.load_state_dict(checkpoint['gen_' + orint])
     gen.eval()
     x = Variable(x, True)
     x = x
     with torch.no_grad():
         x = gen(x)
-    x = transforms.Resize(size_was[::-1])(x)
+    if height > width:
+        height = int(256 * height / width)
+        width = 256
+    else:
+        width = int(256 * width / height)
+        height = 256
+
+    x = transforms.Resize([width, height])(x)
     torchvision.utils.save_image(x, results_dir + '/imag.jpg')

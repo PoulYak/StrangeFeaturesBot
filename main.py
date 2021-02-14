@@ -8,7 +8,6 @@ with open('token.txt') as fin:
 bot = telebot.TeleBot(token)
 
 
-
 @bot.message_handler(commands=['start', 'help'])
 def hello(message):
     text = 'Hi) if you want to know what I can just send me a photo'
@@ -24,8 +23,8 @@ def send_photo(message):
         new_file.write(downloaded_file)
 
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    bn1 = types.KeyboardButton('Pencil style')
-    bn2 = types.KeyboardButton('Zebra')
+    bn1 = types.KeyboardButton('Cartoon style')
+    bn2 = types.KeyboardButton('Maps')
     kb.add(bn1)
     kb.add(bn2)
     bot.send_message(message.chat.id, 'Choose style', reply_markup=kb)
@@ -33,7 +32,15 @@ def send_photo(message):
 
 
 def get_photo_style(message):
-    get_image('imag.jpg', 'peoples2pencil', str(message.from_user.id))
+    d_set = 'photo2cartoon'
+    ups = True
+    if message.text == 'Cartoon style':
+        d_set = 'photo2cartoon'
+        ups = True
+    elif message.text == 'Maps':
+        d_set = 'maps'
+        ups = False
+    get_image('imag.jpg', d_set, str(message.from_user.id), ups=ups)
     doc = open('results/' + str(message.from_user.id) + '/imag.jpg', 'rb')
 
     bot.send_photo(message.chat.id, doc, reply_markup=types.ReplyKeyboardRemove())
