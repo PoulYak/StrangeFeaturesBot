@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-
+import os
 from cycle import get_image
 
 
@@ -24,7 +24,7 @@ def send_photo(message):
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     bn1 = types.KeyboardButton('Cartoon style')
     bn2 = types.KeyboardButton('Maps')
-    bn3 = types.KeyboardButton('Creepy style')
+    bn3 = types.KeyboardButton('Pencil style')
     kb.add(bn1)
     kb.add(bn3)
     kb.add(bn2)
@@ -41,10 +41,10 @@ def get_photo_style(message):
     elif message.text == 'Maps':
         d_set = 'maps'
         ups = False
-    elif message.text == 'Creepy style':
+    elif message.text == 'Pencil style':
         d_set = 'faces2pencil'
         ups = True
-    get_image('imag.jpg', d_set, str(message.from_user.id), ups=ups)
+    get_image('results/' + str(message.from_user.id) + '/imag.jpg', d_set, str(message.from_user.id), ups=ups)
     doc = open('results/' + str(message.from_user.id) + '/imag.jpg', 'rb')
 
     bot.send_photo(message.chat.id, doc, reply_markup=types.ReplyKeyboardRemove())

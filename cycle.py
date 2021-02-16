@@ -216,9 +216,8 @@ def test(iters, dataname, results_dir='results', batch_size=1):
         torchvision.utils.save_image(pic, results_dir + '/image' + str(i) + '.jpg', nrow=3)
 
 
-def get_image(path, dataname, id, orint='ba', ups=False):
-    dir_checkpoints = 'checkpoints/' + dataname
-    results_dir = 'results/' + id
+def get_image(path, dataname, id, orint='ba', results_dir='results', batch_size=1, ups=False):
+    dir_dataset, dir_checkpoints = 'results/' + id, 'checkpoints/' + dataname
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)
 
@@ -229,20 +228,25 @@ def get_image(path, dataname, id, orint='ba', ups=False):
     x = Image.open(path)
     x = x.convert('RGB')
     height, width = x.size
-    x = transforms.ColorJitter(brightness=(1.2, 1.201))(x)
+
     x = transform(x)
     x = x[np.newaxis, :]
     use_dropout = True
     norm = 'instance'
 
-    gen = Gen(input_nc=3, output_nc=3, norm=norm, use_dropout=use_dropout, is_cuda=False, ups=ups)
+    gen = Gen(input_nc=3, output_nc=3, norm=norm,
+              use_dropout=use_dropout, ups=ups, is_cuda=False)
+
     checkpoint = torch.load('%s/last' % dir_checkpoints, map_location='cpu')
     gen.load_state_dict(checkpoint['gen_' + orint])
+
     gen.eval()
+
     x = Variable(x, True)
-    x = x
+    x = x.cpu()
     with torch.no_grad():
         x = gen(x)
+    pic = ((x).data + 1) / 2.0
     if height > width:
         height = int(256 * height / width)
         width = 256
@@ -250,5 +254,5 @@ def get_image(path, dataname, id, orint='ba', ups=False):
         width = int(256 * width / height)
         height = 256
 
-    x = transforms.Resize([width, height])(x)
-    torchvision.utils.save_image(x, results_dir + '/imag.jpg')
+    pic = transforms.Resize([width, height])(pic)
+    torchvision.utils.save_image(pic, 'results/' + id + '/imag.jpg')
