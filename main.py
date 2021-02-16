@@ -1,8 +1,7 @@
 import telebot
 from telebot import types
-import os
-from cycle import get_image
 
+from cycle import get_image
 
 bot = telebot.TeleBot("")
 
@@ -38,12 +37,12 @@ def get_photo_style(message):
     if message.text == 'Cartoon style':
         d_set = 'photo2cartoon'
         ups = True
-    elif message.text == 'Maps':
-        d_set = 'maps'
-        ups = False
     elif message.text == 'Pencil style':
         d_set = 'faces2pencil'
         ups = True
+    elif message.text == 'Maps':
+        d_set = 'maps'
+        ups = False
     get_image('results/' + str(message.from_user.id) + '/imag.jpg', d_set, str(message.from_user.id), ups=ups)
     doc = open('results/' + str(message.from_user.id) + '/imag.jpg', 'rb')
 
