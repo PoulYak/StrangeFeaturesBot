@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-
+import os
 from cycle import get_image
 
 bot = telebot.TeleBot("")
@@ -16,8 +16,9 @@ def hello(message):
 def send_photo(message):
     file_info = bot.get_file(message.photo[len(message.photo) - 1].file_id)
     downloaded_file = bot.download_file(file_info.file_path)
-
-    with open('imag.jpg', 'wb') as new_file:
+    if not os.path.isdir('results/' + str(message.from_user.id)):
+        os.makedirs('results/' + str(message.from_user.id))
+    with open('results/' + str(message.from_user.id) + '/imag.jpg', 'wb') as new_file:
         new_file.write(downloaded_file)
 
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
