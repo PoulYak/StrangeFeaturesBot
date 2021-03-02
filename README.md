@@ -1,4 +1,3 @@
-![DLS](https://static.wixstatic.com/media/66c28f_824e4300a35b4670bd345218eedc211a~mv2.jpg/v1/fit/w_2500,h_1330,al_c/66c28f_824e4300a35b4670bd345218eedc211a~mv2.jpg)
 
 
 # **Bot with CycleGan**
